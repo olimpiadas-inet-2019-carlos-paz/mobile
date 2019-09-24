@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'dart:convert';
+import 'package:muvision/widgets/exposition.dart';
+import 'package:muvision/widgets/ShapesPainter.dart';
+
+import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
@@ -30,16 +35,36 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String barcode;
+  var list;
+  var isLoading = false;
 
-  Future barcodeScanning() async {
-//imageSelectorGallery();
-
-    try {
-      String barcode = await BarcodeScanner.scan();
+  _fetchData(barcode) async {
+    setState(() {
+      isLoading = true;
+    });
+    final response =
+        await http.get("http://192.168.43.104:8000/api/expositions/"+barcode);
+    print(barcode);
+    if (response.statusCode == 200) {
+      list = json.decode(response.body)[0];
+      print(list);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Camara(barcode: barcode)),
+        MaterialPageRoute(builder: (context) => Exposition()),
       );
+      setState(() {
+        isLoading = false;
+        list = list;
+      });
+    } else {
+      throw Exception('Failed to load photos');
+    }
+  }
+
+  Future barcodeScanning() async {
+    try {
+      String barcode = await BarcodeScanner.scan(); // el resultado del qr (1,2,3,...)
+      await _fetchData(barcode);
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
@@ -106,85 +131,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Container(
                           child: OutlineButton(
-                            borderSide: BorderSide(
-                                color: Colors.black, width: 3),
-                            padding: EdgeInsets.only(
-                                right: 50, top: 25, bottom: 25, left: 50),
-                            child: Text('Comenzar recorrido',
-                                style: TextStyle(fontSize: 30)),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            onPressed: () {
-                              barcodeScanning();
-                            },
-                          )),
+                        borderSide: BorderSide(color: Colors.black, width: 3),
+                        padding: EdgeInsets.only(
+                            right: 50, top: 25, bottom: 25, left: 50),
+                        child: Text(list.toString() ?? 'No data',
+                            style: TextStyle(fontSize: 30)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)),
+                        onPressed: () {
+                          barcodeScanning();
+                        },
+                      )),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class ShapesPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-    paint.color = Color.fromRGBO(253, 216, 53, 1);
-
-    var rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    canvas.drawRect(rect, paint);
-
-    paint.color = Color.fromRGBO(255, 167, 38, 1);
-    var path = Path();
-    path.lineTo(0, 500);
-    path.lineTo(size.width, 380);
-    path.lineTo(size.width, 0);
-    path.close();
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class Camara extends StatelessWidget {
-  const Camara({Key key, this.barcode}) : super(key: key);
-  final String barcode;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(barcode),
-      ),
-      body: Center(
-        child: RaisedButton(
-          child: Text('Open route'),
-          onPressed: () {},
-        ),
-      ),
-    );
-  }
-}
-
-class SecondRoute extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Second Route"),
-      ),
-      body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            // Navigate back to first route when tapped.
-          },
-          child: Text('Go back!'),
         ),
       ),
     );
