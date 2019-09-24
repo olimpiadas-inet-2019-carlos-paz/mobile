@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'dart:convert';
 import 'package:muvision/widgets/exposition.dart';
 import 'package:muvision/widgets/ShapesPainter.dart';
@@ -126,18 +127,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Container(
-                          child: OutlineButton(
-                        borderSide: BorderSide(color: Colors.black, width: 3),
-                        padding: EdgeInsets.only(
-                            right: 50, top: 25, bottom: 25, left: 50),
-                        child: Text('Empezar recorrido',
-                            style: TextStyle(fontSize: 30)),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0)),
-                        onPressed: () {
-                          barcodeScanning();
-                        },
-                      )),
+                          child: AspectRatio(
+                            aspectRatio: 2 / 1,
+                            child: RaisedButton(
+                              color: Color.fromRGBO(253, 216, 53, 1),
+                              child: Icon(
+                                MdiIcons.qrcodeScan,
+                                size: 86.0,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0)),
+                              onPressed: () {
+                                barcodeScanning();
+                              },
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

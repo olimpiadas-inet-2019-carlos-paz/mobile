@@ -15,6 +15,7 @@ dependencies:
   barcode_scan: ^0.0.4
   cupertino_icons: ^0.1.2
   flare_flutter: ^1.5.9
+  material_design_icons_flutter: 3.2.4096
 
 dev_dependencies:
   flutter_test:
