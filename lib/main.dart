@@ -36,11 +36,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     try {
       String barcode = await BarcodeScanner.scan();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Camara(barcode: barcode)),
+      );
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          this.barcode = 'No camera permission!';
+          this.barcode = 'No camera permission';
         });
       } else {
         setState(() => this.barcode = 'Unknown error: $e');
@@ -102,17 +106,18 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Container(
                           child: OutlineButton(
-                        borderSide: BorderSide(color: Colors.black, width: 3),
-                        padding: EdgeInsets.only(
-                            right: 50, top: 25, bottom: 25, left: 50),
-                        child: Text('Comenzar recorrido',
-                            style: TextStyle(fontSize: 30)),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0)),
-                        onPressed: () {
-                          barcodeScanning();
-                        },
-                      )),
+                            borderSide: BorderSide(
+                                color: Colors.black, width: 3),
+                            padding: EdgeInsets.only(
+                                right: 50, top: 25, bottom: 25, left: 50),
+                            child: Text('Comenzar recorrido',
+                                style: TextStyle(fontSize: 30)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0)),
+                            onPressed: () {
+                              barcodeScanning();
+                            },
+                          )),
                     ],
                   ),
                 ),
@@ -148,11 +153,14 @@ class ShapesPainter extends CustomPainter {
 }
 
 class Camara extends StatelessWidget {
+  const Camara({Key key, this.barcode}) : super(key: key);
+  final String barcode;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('First Route'),
+        title: Text(barcode),
       ),
       body: Center(
         child: RaisedButton(
