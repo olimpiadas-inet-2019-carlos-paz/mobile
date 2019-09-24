@@ -50,10 +50,17 @@ class _MyHomePageState extends State<MyHomePage> {
     print(response.statusCode);
     if (response.statusCode == 200) {
       print(response.body);
-      var data = ExpositionModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
+      var data = ExpositionModel.fromJson(
+          json.decode(utf8.decode(response.bodyBytes)));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Exposition(name: data.name, creationDate: data.creationDate, description: data.description, imgUrl: data.imgUrl,)),
+        MaterialPageRoute(
+            builder: (context) => Exposition(
+                  name: data.name,
+                  creationDate: data.creationDate,
+                  description: data.description,
+                  imgUrl: data.imgUrl,
+                )),
       );
       setState(() {
         isLoading = false;
@@ -63,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       throw Exception('Error');
     }
   }
+
   Future barcodeScanning() async {
     try {
       String barcode = await BarcodeScanner.scan();
@@ -125,22 +133,33 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                       Container(
-                          child: AspectRatio(
-                            aspectRatio: 2 / 1,
-                            child: RaisedButton(
-                              color: Color.fromRGBO(253, 216, 53, 1),
-                              child: Icon(
-                                MdiIcons.qrcodeScan,
-                                size: 86.0,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0)),
-                              onPressed: () {
-                                barcodeScanning();
-                              },
+                        child: AspectRatio(
+                          aspectRatio: 2 / 1,
+                          child: RaisedButton(
+                            color: Color.fromRGBO(253, 216, 53, 1),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Icon(
+                                  MdiIcons.qrcodeScan,
+                                  size: 56.0,
+                                ),
+                                Text(
+                                  'Escanear codigo',
+                                  style: TextStyle(
+                                    fontSize: 32.0,
+                                  ),
+                                ),
+                              ],
                             ),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0)),
+                            onPressed: () {
+                              barcodeScanning();
+                            },
                           ),
                         ),
+                      ),
                     ],
                   ),
                 ),
