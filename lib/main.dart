@@ -50,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
     print(response.statusCode);
     if (response.statusCode == 200) {
       print(response.body);
-      var data = ExpositionModel.fromJson(json.decode(response.body));
+      var data = ExpositionModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Exposition(name: data.name, creationDate: data.creationDate, description: data.description)),
+        MaterialPageRoute(builder: (context) => Exposition(name: data.name, creationDate: data.creationDate, description: data.description, imgUrl: data.imgUrl<,)),
       );
       setState(() {
         isLoading = false;
@@ -63,11 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
       throw Exception('Error');
     }
   }
-
   Future barcodeScanning() async {
     try {
-      //String barcode = await BarcodeScanner.scan();
-      barcode = '1';
+      String barcode = await BarcodeScanner.scan();
       await _fetchData(barcode);
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
@@ -98,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 AppBar(
                   title: Text(
-                    'Muvison',
+                    'Muvision',
                     style: TextStyle(fontSize: 45, fontWeight: FontWeight.w700),
                   ),
                   centerTitle: true,
