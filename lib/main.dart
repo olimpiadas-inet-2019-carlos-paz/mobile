@@ -124,12 +124,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         padding: EdgeInsets.only(top: 20),
                       ),
-                      Container(
-                        height: 250,
-                        width: 300,
-                        child: FlareActor(
-                          'lib/assets/Scaner.flr',
-                          animation: 'Movendo Celular v2',
+                      Semantics(
+                        label: "Preciona el boton inferior, luego acerca tu telefono al codigo qr para saber mas",
+                        enabled: true,
+                        readOnly: true,
+                        child: Container(
+                          height: 250,
+                          width: 300,
+                          child: FlareActor(
+                            'lib/assets/Scaner.flr',
+                            animation: 'Movendo Celular v2',
+                          ),
                         ),
                       ),
                       Container(

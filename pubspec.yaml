@@ -18,14 +18,13 @@ dependencies:
   material_design_icons_flutter: 3.2.4096
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  flutter_launcher_icons: "^0.7.0"
+
+flutter_icons:
+  android: true
+  image_path: "lib/assets/logo.png"
 
 
-# For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
   uses-material-design: true
   assets:
