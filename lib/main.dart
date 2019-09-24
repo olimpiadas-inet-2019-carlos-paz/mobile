@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:barcode_scan/barcode_scan.dart';
@@ -117,18 +118,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: EdgeInsets.only(top: 20),
                       ),
                       Container(
-                        child: Column(
-                          children: <Widget>[
-                            Image.asset(
-                              'lib/assets/qr_code_example.png',
-                              height: 200,
-                            ),
-                            Text(
-                              'Ejemplo',
-                              style: TextStyle(
-                                  fontSize: 30, fontStyle: FontStyle.italic),
-                            ),
-                          ],
+                        height: 250,
+                        width: 300,
+                        child: FlareActor(
+                          'lib/assets/Scaner.flr',
+                          animation: 'Movendo Celular v2',
                         ),
                       ),
                       Container(
