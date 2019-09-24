@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var data = ExpositionModel.fromJson(json.decode(utf8.decode(response.bodyBytes)));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Exposition(name: data.name, creationDate: data.creationDate, description: data.description, imgUrl: data.imgUrl<,)),
+        MaterialPageRoute(builder: (context) => Exposition(name: data.name, creationDate: data.creationDate, description: data.description, imgUrl: data.imgUrl,)),
       );
       setState(() {
         isLoading = false;
