@@ -4,6 +4,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'dart:convert';
 import 'package:muvision/widgets/exposition.dart';
 import 'package:muvision/widgets/ShapesPainter.dart';
+import 'package:muvision/expositionModel.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -43,27 +44,28 @@ class _MyHomePageState extends State<MyHomePage> {
       isLoading = true;
     });
     final response =
-        await http.get("http://192.168.43.104:8000/api/expositions/"+barcode);
-    print(barcode);
+        await http.get("http://192.168.43.104:8000/api/expositions/" + barcode);
+    print(response.statusCode);
     if (response.statusCode == 200) {
-      list = json.decode(response.body)[0];
-      print(list);
+      print(response.body);
+      var data = ExpositionModel.fromJson(json.decode(response.body));
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Exposition()),
+        MaterialPageRoute(builder: (context) => Exposition(name: data.name, creationDate: data.creationDate, description: data.description)),
       );
       setState(() {
         isLoading = false;
         list = list;
       });
     } else {
-      throw Exception('Failed to load photos');
+      throw Exception('Error');
     }
   }
 
   Future barcodeScanning() async {
     try {
-      String barcode = await BarcodeScanner.scan(); // el resultado del qr (1,2,3,...)
+      //String barcode = await BarcodeScanner.scan();
+      barcode = '1';
       await _fetchData(barcode);
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
@@ -134,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderSide: BorderSide(color: Colors.black, width: 3),
                         padding: EdgeInsets.only(
                             right: 50, top: 25, bottom: 25, left: 50),
-                        child: Text(list.toString() ?? 'No data',
+                        child: Text('Empezar recorrido',
                             style: TextStyle(fontSize: 30)),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)),
