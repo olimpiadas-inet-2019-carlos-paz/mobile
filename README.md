@@ -1,4 +1,4 @@
-# muvision
+# Muvision
 
 Una aplicación para ayudar a personas con discapacidad visual en el museo.
 
@@ -14,3 +14,12 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our 
 [online documentation](https://flutter.dev/docs), which offers tutorials, 
 samples, guidance on mobile development, and a full API reference.
+
+## Dependencias
+
+Dependencias |
+-- |
+http (Dart Package)| 
+barcode_scan |
+flare_flutter |
+flutter_launcher_icons |
